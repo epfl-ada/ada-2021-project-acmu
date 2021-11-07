@@ -26,10 +26,11 @@ speakers, provided through the `speaker_attributes.parquet` file.
 1. We first have to map the Q-code attributes to their corresponding labels. Initially, we attempted to use the [Wikidata API](https://qwikidata.readthedocs.io/en/stable/readme.html) to aggregate all the aliases and the label for each Q-code.
 However, this procedure was slow, so we later decided to use the provided `wikidata_labels_descriptions_quotebank.csv.bz2`
 file for the mapping.
-2. We merge the Quotebank and the Wikidata entries based on their Q-codes, such that every row would now contain additional labelled information
+2. We merge the Quotebank and the Wikidata entries based on the speaker's Q-codes, such that every row would now contain additional labelled information
 about the speaker.
 3. If a `qid` field in Quotebank does not match with any of the `id` values in Wikidata, we have observered that this happens because the Quotebank
-Q-code is not the most recent one. We simply drop all these rows, as they do not have a correspondence in Wikidata.
+Q-code is not the most recent one. We simply drop all these rows, as they do not have a correspondence in Wikidata. However, if we find an unmatched
+Q-code in one of the speaker's attributes, we replace it with `None`.
 4. We make use of the speaker's `occupation` present in the Wikidata by selecting only the speakers with _politician_ as one of their occupations.
 
 
