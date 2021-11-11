@@ -8,10 +8,13 @@ A 150 word description of the project idea and goals. What’s the motivation be
 <!---
 A list of research questions you would like to address during the project.
 --->
-Through our current and future analyses, we aim to answer the following research questions:
-* Which are most common subjects tackled by politicians per year? Do these subjects change with time?
-* Is there any link between the most common subjects per speaker and their political orientation & party membership?
-* Could politicians' quotes be clustered by subject?
+Using our current and future analysis, we aim to answer a sequence of questions to gain an insight into our final hypothesis.
+1. What are the most common subjects tackled by politicians? 
+2. Do these subjects change with time?
+3. Can politicians' quotes be clustered by subject?
+4. Is it possible 
+
+**Hypothesis: Is there a link between the most common subjects per speaker and their political orientation and/or party membership?**
 
 <a name="additional-datasets"></a>
 ## Additional Datasets :fax:
@@ -40,10 +43,10 @@ Q-code in one of the speaker's attributes, we replace it with `None`.
 
 ## Methods :mag:
 For the current stage of the project, we decided to analyze the data from 2018. In our final project, we will include all the data throughout the years.
-Our research goals are all politically-related. Thus, we use only the subset of quotes belonging to politicians, extracted with the methods described above
-in the [Additional Datasets section](#additional-datasets). Furthermore, to ensure a higher confidence that our analysis is based on quotes truly belonging
+Our research goals are all politically-related. Thus, we primarily use the subset of quotes belonging to politicians, extracted with the methods described above
+in the [additional datasets section](#additional-datasets). Furthermore, to ensure a higher confidence that our analysis is based on quotes truly belonging
 to politicians, we filtered the rows where the probability of the speaker is higher than 0.6. 
-Given the limited in-memory capacity, as well as the large of the files, 
+Given the limited in-memory capacity, 
 
 ## Proposed timeline :clock10:
 
