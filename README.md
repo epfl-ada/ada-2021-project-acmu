@@ -47,7 +47,7 @@ To ensure a higher confidence in our analysis, we filtered out rows where the pr
 ![topic clusters](./figures/clusters1.png)
 
 > ### What are the most common subjects tackled by politicians? 
-> As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama. For the future milestone, we can conduct our analysis based on the topic clusters identified in question 1.
+> As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama. For the future milestone, we can conduct our analysis based on the topic clusters identified in question 1. Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. The HDB scan algorithm automatically segments quotes within clusters. We keep track of the political party of the members within that topic cluster and output the number of quotes each party is associated with for a given topic.
 
 > ### Do these subjects change with time?
 > Not only do politicians switch parties from time to time, but even opinions within the same party might fluctuate. While investigating approaches for answering our 3rd research question, we discovered an important aspect of the dataset. There is no feasible way to link the original time of the quote to the time it is referenced in a website. 
@@ -94,6 +94,16 @@ Given the limited in-memor
 * scaling the current analysis to multiple years
 
 ## Proposed timeline :clock10:
+
+* 15.11.21 Integration of additional datasets into current analysis
+* 19.11.21 Begin on a comprehensive analysis targetting each individual research question
+* 22.11.21 Pause project work 
+* 26.11.21 **Homework 2 deadline**
+* 28.11.21 Finish comprehensive analysis and link relevant insights to final hypothesis.
+* 08.12.21 Reach conclusion on final hypothesis and begin on a rough draft of the datastory.
+* 11.12.21 Complete all code implementations and visualisations relevant to analysis
+* 14.12.21 Complete datastory 
+* 17.12.21 **Milestone 3 deadline**
 
 ## Team Organization :raised_hands:
 <!---
