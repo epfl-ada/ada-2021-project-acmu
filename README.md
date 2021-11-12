@@ -10,16 +10,13 @@ The Quotebank dataset provides 178 million quotes gathered from English news art
 <!---
 A list of research questions you would like to address during the project.
 --->
-Using our current and future analysis, we aim to answer a sequence of questions to gain an insight into our final hypothesis.
+Using our current and future analysis, we aim to answer a sequence of questions to gain insights into the relationship between the most common topics addressed in quotes and the parties their speakers belong to:
 1. Can politicians' quotes be clustered by subject?
 1. What are the most common subjects tackled by politicians? 
 1. Do the main subjects change with time?
 
-**Hypothesis: Is there a link between the most common subjects per speaker and their political orientation and/or party membership?**
-
 <a name="additional-datasets"></a>
 ## Additional Datasets :fax:
-
 <!---
 List the additional dataset(s) you want to use (if any), and some ideas on how you expect to get, manage, process, and enrich it/them.
 Show us that you’ve read the docs and some examples, and that you have a clear idea on what to expect. Discuss data size and format if relevant.
@@ -30,28 +27,33 @@ speakers, provided through the `speaker_attributes.parquet` file.
 1. We first have to map the Q-code attributes to their corresponding labels. Initially, we attempted to use the [Wikidata API](https://qwikidata.readthedocs.io/en/stable/readme.html) to aggregate all the aliases and the label for each Q-code.
 However, this procedure was slow, so we later decided to use the provided `wikidata_labels_descriptions_quotebank.csv.bz2`
 file for the mapping.
-1. We filter the Wikidata entries to keep only the Q-codes of the speakers with politician as one of their occupations.
+1. We filter the Wikidata entries to keep only the Q-codes of the speakers with politician as one of their occupations and who belong to at least one party.
 1. We inner join the Quotebank and the Wikidata entries based on the speaker's Q-codes, such that every row would now contain additional labelled information
 about the speaker. This results in a dataframe only containing politician quotes. 
-1. If a `qid` field in Quotebank does not match with any of the `id` values in Wikidata, we have observered that this happens because the Quotebank
+1. If a `qid` field in Quotebank does not match with any of the `id` values in Wikidata, we have observed that this happens because the Quotebank
 Q-code is not the most recent one. We simply drop all these rows, as they do not have a correspondence in Wikidata.
+1. To attribute a party to a quote, we engineered a dataset where we map each unique speaker Q-code to a list of tuples - `<party_name>, <start_date>, <end_date>`. We are retrieving the dates using Wikidata's `qwikidata` API.
+1. If a speaker belonged to only one political party throughout their life, we associate that party with their quotes, regardless of the date.
+1. If a speaker belonged to multiple parties, we aim to select the party they were part of at the time of the quotation.
 
 ## Methods :mag:
-
-For the current stage of the project, we decided to analyze data from 2018. In our final analysis, we will include data for all the available years. Our research goals are all politically-related. Thus, we primarily use the subset of quotes belonging to politicians, extracted with the methods described above
+For the current stage of the project, we decided to analyze data from 2018. In our final analysis, we will include data for all the available years. Our research goals are all politically-related. Thus, we use the subset of quotes belonging to politicians, extracted with the methods described above
 in the [additional datasets section](#additional-datasets). 
 
 To ensure a higher confidence in our analysis, we filtered out rows where the probability of the speaker is lower than 0.6. Furthermore, we remove all the rows which have multiple Q-codes associated to their speaker, as it is difficult to distinguish who actually uttered the quote.
 
 > ### Can politicians' quotes be clustered by subject?
-We create sentence embeddings using the BERT sentence transformer. Thus, the sentences are mapped to a 768 dimensional vector space. Afterwards, we use UMAP for dimensionality reduction. The reduced vectors are passed to HDBSCAN to segment quotes within clusters. We chose to investigate the number of neighbours in umap (`n_neighbours`), the number of dimensions to use in the reduced sentence embeddings (`n_components`), and the minimum cluster size (`min_cluster_size`) for segmenting the data. We treated these values as hyperparameters in the clustering model.
+To investigate this, we create sentence embeddings using the BERT sentence transformer. Thus, the sentences are mapped to a 768 dimensional vector space. Afterwards, we use UMAP for dimensionality reduction. The reduced vectors are passed to HDBSCAN to segment quotes within clusters. The plot below represents the 2-dimensional visualization of the clusters we were able to generate on a chunk of the data.
 
 <p align="center">
- <img src="./figures/clusters1.png" alt="topic clusters" width="600"/>
+  <img src="./figures/clusters1.png" alt="topic clusters" width="600"/>
 </p>
+
+We will further explore this question for our next milestone, as we aim to try a different clustering technique. Whereas our initial approach was to blindly cluster quotes, for the next milestone we consider manually selecting topics of interest first, then finding all of the quotes that are relevant to those topics.
 
 > ### What are the most common subjects tackled by politicians? 
 As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama, which are discussed in the notebook. The table below represents the 10 most common nouns of each speaker.
+
 
 | Donald Trump | Barack Obama |
 |--------------|--------------|
@@ -66,18 +68,17 @@ As a crude example, we can investigate the occurrences of the topic word in the 
 | world        | things       |
 | things       | work         |
 
-Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. We keep track of the political party of the members within each topic cluster and output the number of quotes each party is associated with for a given topic. For the future milestone, we will refine our analyses based on the labelled topic clusters.
+
+Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. We keep track of the political party of the members within each topic cluster and output the number of quotes each party is associated with for a given cluster. For the future milestone, we will refine our analyses based on the pre-defined topics of interest.
 
 > ### Do the main subjects change with time?
-Not only do politicians switch parties from time to time, but even opinions within the same party can fluctuate. Our first approach at monitoring quote trends involves counting the quotes containing a certain keyword by date and relating them to Google trends, to figure out whether they follow a similar pattern. The plot below suggests a link between the occurrence of "shooting" in Donald Trump's quotes and the search trend of the word. Furthermore, both can be related to mass shootings that happened in the US, such as the Stoneman Douglas High School shooting, which corresponds to a spike in both trends.
+Not only do politicians switch parties from time to time, but even opinions within the same party can fluctuate. Our first approach at monitoring quote trends involves counting the quotes containing a certain keyword by date and relating them to Google trends, to figure out whether they follow a similar pattern. The plot below suggests a link between the occurrence of "shooting" in Donald Trump's quotes and the search trend of the word. Furthermore, both can be related to mass shootings that happened in the US, such as the Stoneman Douglas High School shooting, which corresponds to the highest spike in both trends.
 
 <p align="center">
  <img src="./figures/trump_quotes.png" alt="trump quotes" width=500"/>
 </p>
- 
-While investigating approaches for answering our 3rd research question, we discovered an important aspect of the dataset. There is no feasible way to link the original time of the quote to the time it is referenced in a website. 
-
-We consider that the quotes in quotebank may not be a direct representation of what politicians actually talk about. By definition, quotes are cherry picked by authors that might be biased. For example, some websites are owned by politicians and controversial subjects are over-emphasised in the media.
+                                                                    
+While examining approaches for answering our third research question, we discovered an important aspect of the dataset. Quotes may be referenced in news websites at a different time than originally spoken. Furthermore, news quotes may not be a direct representation of what politicians actually talk about. By definition, quotes are cherry-picked by authors that might be biased. For example, some websites are owned by politicians and controversial subjects are over-emphasised in the media. It remains to further analyze the effect of these aspects for our next milestone.
 
 <!---
 > Can website biases influence our findings on the actual subjects politicians talk about?
@@ -89,32 +90,11 @@ Some subjects that may be important for a party are not highlighted in the media
 
  Initially, the analysis can be based on a list of pre-defined topics which we deem relevant to the speaker or party. We can implement an end-to-end approach by using the results of the sentence classifier in the first question to create a dynamic list of topics to look for.
 
--->
-
-
-
-
-
-
-
-
-
-
-These websites may promote or downplay controversial subjects or highlight negatives of other parties.
-
-The media tends to overemphasise controversial subjects    
-
-
- in our methods (lag between quote and website reference of quote). Added complexity if politician is in multiple parties. To simplify this, we make an assumption. 
-
-Methods for scaling analysis to multiple years:
-
-
-Given the limited in-memor
-
-
 * feasibility of the clusters 
 * scaling the current analysis to multiple years
+-->  
+                                                                    
+
 
 ## Proposed timeline :clock10:
 * 15.11.21 Integration of additional datasets into current analysis
@@ -132,7 +112,3 @@ Given the limited in-memor
 A list of internal milestones up until project Milestone 3.
 --->
 
-## Questions for TAs
-<!---
-Add here any questions you have for us related to the proposed project.
---->
