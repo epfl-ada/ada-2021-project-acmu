@@ -47,8 +47,7 @@ We create sentence embeddings using the BERT sentence transformer. Thus, the sen
 ![topic clusters](./figures/clusters1.png)
 
 > ### What are the most common subjects tackled by politicians? 
-As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama. Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. We keep track of the political party of the members within each topic cluster and output the number of quotes each party is associated with for a given topic. For the future milestone, we will refine our analyses based on the labelled topic clusters.
-The table below represents the most common words for two representative US politicians of opposing parties.
+As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama, which are discussed in the notebook. The table below represents the 10 most common nouns of each speaker.
 
 | Donald Trump | Barack Obama |
 |--------------|--------------|
@@ -63,10 +62,10 @@ The table below represents the most common words for two representative US polit
 | world        | things       |
 | things       | work         |
 
-> ### Do these subjects change with time?
-Not only do politicians switch parties from time to time, but even opinions within the same party might fluctuate. While investigating approaches for answering our 3rd research question, we discovered an important aspect of the dataset. There is no feasible way to link the original time of the quote to the time it is referenced in a website. 
+Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. We keep track of the political party of the members within each topic cluster and output the number of quotes each party is associated with for a given topic. For the future milestone, we will refine our analyses based on the labelled topic clusters.
 
-
+> ### Do the main subjects change with time?
+Not only do politicians switch parties from time to time, but even opinions within the same party can fluctuate. Our first approach at monitoring quote trends involves counting the quotes containing a certain keyword by date and relating them to Google trends, to figure out whether they follow a similar pattern. While investigating approaches for answering our 3rd research question, we discovered an important aspect of the dataset. There is no feasible way to link the original time of the quote to the time it is referenced in a website. 
 
 We consider that the quotes in quotebank may not be a direct representation of what politicians actually talk about. By definition, quotes are cherry picked by authors that might be biased. For example, some websites are owned by politicians and controversial subjects are over-emphasised in the media.
 
