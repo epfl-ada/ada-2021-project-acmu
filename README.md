@@ -54,20 +54,58 @@ We will further explore this question for our next milestone, as we aim to try a
 > ### What are the most common subjects tackled by politicians? 
 As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama, which are discussed in the notebook. The table below represents the 10 most common nouns of each speaker.
 
-
-| Donald Trump | Barack Obama |
-|--------------|--------------|
-| people       | people       |
-| country      | time         |
-| president    | president    |
-| time         | world        |
-| Trump        | country      |
-| states       | politics     |
-| lot          | years        |
-| deal         | democracy    |
-| world        | things       |
-| things       | work         |
-
+<p align="center">
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky">Donald Trump</th>
+    <th class="tg-0pky">Barack Obama</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">people</td>
+    <td class="tg-0pky">people</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">country</td>
+    <td class="tg-0pky">time</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">president</td>
+    <td class="tg-0pky">president</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">time</td>
+    <td class="tg-0pky">world</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">Trump</td>
+    <td class="tg-0pky">country</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">states</td>
+    <td class="tg-0pky">politics</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">lot</td>
+    <td class="tg-0pky">years</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">deal</td>
+    <td class="tg-0pky">democracy</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">world</td>
+    <td class="tg-0pky">things</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">things</td>
+    <td class="tg-0pky">work</td>
+  </tr>
+</tbody>
+</table>
+</p>
 
 Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. We keep track of the political party of the members within each topic cluster and output the number of quotes each party is associated with for a given cluster. For the future milestone, we will refine our analyses based on the pre-defined topics of interest.
 
@@ -97,18 +135,47 @@ Some subjects that may be important for a party are not highlighted in the media
 
 
 ## Proposed timeline :clock10:
-* 15.11.21 Integration of additional datasets into current analysis
-* 19.11.21 Begin on a comprehensive analysis targetting each individual research question
-* 22.11.21 Pause project work 
+* 15.11.21 Integration of datasets for all years into current analysis.
+* 19.11.21 Re-do clustering based on topics of interests.
+* 22.11.21 Pause project work.
 * 26.11.21 **Homework 2 deadline**
-* 28.11.21 Finish comprehensive analysis and link relevant insights to final hypothesis.
-* 08.12.21 Reach conclusion on final hypothesis and begin on a rough draft of the datastory.
-* 11.12.21 Complete all code implementations and visualisations relevant to analysis
-* 14.12.21 Complete datastory 
+* 28.11.21 Perform final analyses.
+* 08.12.21 Begin developing a rough draft of the datastory.
+* 11.12.21 Complete all code implementations and visualisations relevant to analysis.
+* 14.12.21 Complete datastory.
 * 17.12.21 **Milestone 3 deadline**
 
 ## Team Organization :raised_hands:
 <!---
 A list of internal milestones up until project Milestone 3.
 --->
-
+<table class="tg" style="undefined;table-layout: fixed; width: 342px">
+<colgroup>
+<col style="width: 164px">
+<col style="width: 178px">
+</colgroup>
+<thead>
+  <tr>
+    <th class="tg-0lax"></th>
+    <th class="tg-0lax">Tasks</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax">@arinaraileanu</td>
+    <td class="tg-0lax">Come up with meaningful visualizations<br><br>Continue exploring the dataset<br><br>Develop the final text for the data story</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">@nitu-catalin1998</td>
+    <td class="tg-0lax">Develop the web interface<br><br>Analyze news website bias<br><br>Develop the final text for the data story</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">@MihaiDavid05</td>
+    <td class="tg-0lax">Define topic of interests<br><br>Tune clustering<br><br>Develop the final text for the data story</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax">@umerhasan17</td>
+    <td class="tg-0lax">Develop the web interface<br><br>Integrate datasets of all years<br><br>Develop the final text for the data story</td>
+  </tr>
+</tbody>
+</table>
