@@ -42,15 +42,29 @@ in the [additional datasets section](#additional-datasets).
 To ensure a higher confidence in our analysis, we filtered out rows where the probability of the speaker is lower than 0.6. Furthermore, we remove all the rows which have multiple Q-codes associated to their speaker, as it is difficult to distinguish who actually uttered the quote.
 
 > ### Can politicians' quotes be clustered by subject?
-> We create sentence embeddings using the BERT sentence transformer. Thus, the sentences are mapped to a 768 dimensional vector space. Afterwards, we use UMAP for dimensionality reduction. The reduced vectors are passed to HDBSCAN to segment quotes within clusters. We chose to investigate the number of neighbours in umap (`n_neighbours`), the number of dimensions to use in the reduced sentence embeddings (`n_components`), and the minimum cluster size (`min_cluster_size`) for segmenting the data. We treated these values as hyperparameters in the clustering model.
+We create sentence embeddings using the BERT sentence transformer. Thus, the sentences are mapped to a 768 dimensional vector space. Afterwards, we use UMAP for dimensionality reduction. The reduced vectors are passed to HDBSCAN to segment quotes within clusters. We chose to investigate the number of neighbours in umap (`n_neighbours`), the number of dimensions to use in the reduced sentence embeddings (`n_components`), and the minimum cluster size (`min_cluster_size`) for segmenting the data. We treated these values as hyperparameters in the clustering model.
 
 ![topic clusters](./figures/clusters1.png)
 
 > ### What are the most common subjects tackled by politicians? 
-> As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama. For the future milestone, we can conduct our analysis based on the topic clusters identified in question 1. Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. The HDB scan algorithm automatically segments quotes within clusters. We keep track of the political party of the members within that topic cluster and output the number of quotes each party is associated with for a given topic.
+As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama. Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. We keep track of the political party of the members within each topic cluster and output the number of quotes each party is associated with for a given topic. For the future milestone, we will refine our analyses based on the labelled topic clusters.
+The table below represents the most common words for two representative US politicians of opposing parties.
+
+| Donald Trump | Barack Obama |
+|--------------|--------------|
+| people       | people       |
+| country      | time         |
+| president    | president    |
+| time         | world        |
+| Trump        | country      |
+| states       | politics     |
+| lot          | years        |
+| deal         | democracy    |
+| world        | things       |
+| things       | work         |
 
 > ### Do these subjects change with time?
-> Not only do politicians switch parties from time to time, but even opinions within the same party might fluctuate. While investigating approaches for answering our 3rd research question, we discovered an important aspect of the dataset. There is no feasible way to link the original time of the quote to the time it is referenced in a website. 
+Not only do politicians switch parties from time to time, but even opinions within the same party might fluctuate. While investigating approaches for answering our 3rd research question, we discovered an important aspect of the dataset. There is no feasible way to link the original time of the quote to the time it is referenced in a website. 
 
 
 
@@ -94,7 +108,6 @@ Given the limited in-memor
 * scaling the current analysis to multiple years
 
 ## Proposed timeline :clock10:
-
 * 15.11.21 Integration of additional datasets into current analysis
 * 19.11.21 Begin on a comprehensive analysis targetting each individual research question
 * 22.11.21 Pause project work 
@@ -109,6 +122,7 @@ Given the limited in-memor
 <!---
 A list of internal milestones up until project Milestone 3.
 --->
+
 ## Questions for TAs
 <!---
 Add here any questions you have for us related to the proposed project.
