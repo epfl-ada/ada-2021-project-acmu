@@ -99,6 +99,14 @@ Given the limited in-memor
 
 ## Proposed timeline :clock10:
 
+* 15.11.21 Integration of additional datasets into current analysis
+* 19.11.21 Begin on a comprehensive analysis targetting each individual research question
+* 22.11.21 Pause project work 
+* 26.11.21 **Homework 2 deadline**
+* 28.11.21 Finish comprehensive analysis and link relevant insights to final hypothesis.
+* 08.12.21 Reach conclusion on final hypothesis and begin on a rough draft of the datastory.
+* 11.12.21 Complete all code implementations and visualisations relevant to analysis
+* 14.12.21 Complete datastory 
 * 17.12.21 **Milestone 3 deadline**
 
 ## Team Organization :raised_hands:
