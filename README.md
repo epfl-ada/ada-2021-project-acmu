@@ -44,10 +44,10 @@ To ensure a higher confidence in our analysis, we filtered out rows where the pr
 > ### Can politicians' quotes be clustered by subject?
 > We create sentence embeddings using the BERT sentence transformer. The embeddings have a very large dimension (~700). Therefore, we use UMAP for dimensionality reduction. The reduced vectors are passed to hdbscan for clustering. We chose to investigate the number of neighbours in umap (`n_neighbours`), the number of dimensions to use in the reduced sentence embeddings (`n_components`), and the minimum cluster size (`min_cluster_size`) for segmenting the data. We treated these values as hyperparameters in the clustering model. Following some initial findings the graph below represents clustering with a decent set of parameters.
 
-**TODO image**
+![topic clusters](./figures/clusters1.png)
 
 > ### What are the most common subjects tackled by politicians? 
-> As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama. For the future milestone, we can conduct our analysis based on the topic clusters identified in question 1.
+> As a crude example, we can investigate the occurrences of the topic word in the quotations by a politician. We pre-process the data using NLTK to identify commonly used nouns within speaker quotations. As an example, we empirically observe differences between nouns for Trump and Obama. For the future milestone, we can conduct our analysis based on the topic clusters identified in question 1. Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. The HDB scan algorithm automatically segments quotes within clusters. We keep track of the political party of the members within that topic cluster and output the number of quotes each party is associated with for a given topic. 
 
 > ### Do these subjects change with time?
 > While investigating approaches for answering our 3rd research question, we discovered an important aspect of the dataset. There is no feasible way to link the original time of the quote to the time it is referenced in a website. 
@@ -55,6 +55,8 @@ To ensure a higher confidence in our analysis, we filtered out rows where the pr
 
 
 We consider that the quotes in quotebank may not be a direct representation of what politicians actually talk about. By definition, quotes are cherry picked by authors that might be biased. For example, some websites are owned by politicians and controversial subjects are over-emphasised in the media.
+
+To conduct similar analysis on the rest of the dataset, we have experimented with approaches 
 
 <!---
 > Can website biases influence our findings on the actual subjects politicians talk about?
@@ -65,6 +67,14 @@ Some subjects that may be important for a party are not highlighted in the media
 (or synonyms of the word) 
 
  Initially, the analysis can be based on a list of pre-defined topics which we deem relevant to the speaker or party. We can implement an end-to-end approach by using the results of the sentence classifier in the first question to create a dynamic list of topics to look for.
+
+
+These websites may promote or downplay controversial subjects or highlight negatives of other parties.
+
+The media tends to overemphasise controversial subjects    
+
+
+ in our methods (lag between quote and website reference of quote). Added complexity if politician is in multiple parties. To simplify this, we make an assumption. 
 
 -->
 
@@ -77,12 +87,6 @@ Some subjects that may be important for a party are not highlighted in the media
 
 
 
-These websites may promote or downplay controversial subjects or highlight negatives of other parties.
-
-The media tends to overemphasise controversial subjects    
-
-
- in our methods (lag between quote and website reference of quote). Added complexity if politician is in multiple parties. To simplify this, we make an assumption. 
 
 Methods for scaling analysis to multiple years:
 
@@ -94,6 +98,8 @@ Given the limited in-memor
 * scaling the current analysis to multiple years
 
 ## Proposed timeline :clock10:
+
+* 17.12.21 **Milestone 3 deadline**
 
 ## Team Organization :raised_hands:
 <!---
