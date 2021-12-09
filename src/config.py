@@ -5,7 +5,7 @@ PARSE_QUOTEBANK = True
 COLORS = ['#377EB8', '#FF7F00', '#4DAF4A', '#F781BF']
 
 # DATA_DIR (root data dir)
-BASE_PATH = '/home/albion/code/EPFL/ada/ada-2021-project-acmu/'  # TODO change this on your machine
+BASE_PATH = '/mnt/e/Desktop/EPFL/ADA/ADA_proj/'  # TODO change this on your machine
 DATA_DIR = './'
 # DATA_DIR = '/content/drive/MyDrive/'
 CUSTOM_DATA_DIR = DATA_DIR + 'custom_data/'
