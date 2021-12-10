@@ -1,11 +1,10 @@
 import pickle
-import random
+import re
 from collections import defaultdict
+from datetime import datetime
 
-import bertopic
 import pandas as pd
 from bertopic import BERTopic
-import re
 
 base_data_dir = './'
 
@@ -61,6 +60,17 @@ def get_all_quotes_for_party(party, start_year=2015, end_year=2021, return_quote
         return res['quotation'].tolist()
 
 
+def convert_quoteids_to_timestamps(quoteIDs, bucket_monthly=True):
+    def convert_to_month(quoteID):
+        datetime.strptime('-'.join(quoteID.split('-')[:2]), '%Y-%m')
+        return quoteID
+
+    if bucket_monthly:
+        return list(map(convert_to_month, quoteIDs))
+    else:
+        return quoteIDs
+
+
 def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=True, auto_reduction=True):
     cur_party = 'Republican Party'
     model_base_path = f'{base_data_dir}ADA_models/{snake_case(cur_party)}'
@@ -73,7 +83,7 @@ def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=Tru
         model.save(f'{model_base_path}_topic_model_1')
 
     # Transform model with all quotes to get topics
-    quotes_all = get_all_quotes_for_party(cur_party)
+    quotes_all, quotes_quoteIDs = get_all_quotes_for_party(cur_party, return_quote_ids=True)
 
     print(f'Transform on {len(quotes_all)} quotes.')
 
@@ -104,7 +114,11 @@ def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=Tru
             with open(f'{model_base_path}_auto_reduced_topics.pkl', 'wb') as topic_file:
                 pickle.dump([auto_reduced_topics, auto_reduced_probs], topic_file)
 
-        model.visualize_topics()
+        # Topics over time
+        topics_over_time_df = model.topics_over_time(
+            quotes_all, auto_reduced_topics, convert_quoteids_to_timestamps(quotes_quoteIDs)
+        )
+        topics_over_time_df.to_pickle(f'{model_base_path}_all_quotes_topics_over_time')
     else:
         # Manual reduction
         manual_topic_list = [
@@ -128,19 +142,8 @@ def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=Tru
 
 
 def main():
-    per_party_analysis(load_reduced_model=False, load_topics=False)
+    per_party_analysis(load_model=True, load_reduced_model=True, load_topics=True)
 
 
 if __name__ == '__main__':
     main()
-
-"""
-    nr_topics = 10
-    new_topics, new_probs = model.reduce_topics(docs, model, nr_topics=nr_topics)
-    # new_topics.save(f'{base_data_dir}ADA_models/{cur_party}_reduced_{nr_topics}')
-
-
-    fig = model.visualize_topics(top_n_topics=20)
-    fig.write_html('visual.html')
-
-"""
