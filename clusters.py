@@ -8,6 +8,8 @@ from bertopic import BERTopic
 
 base_data_dir = './'
 
+random_state = 42
+
 
 def snake_case(s):
     return '_'.join(
@@ -30,7 +32,7 @@ def create_quote_samples_for_party(parties, num_quotes=100000, start_year=2015, 
             df = df[df['party_one'] == party]
             df = df[['quoteID', 'quotation']]
             print(party, quote_year, cur_num_quotes, len(df))
-            df = df.sample(n=cur_num_quotes, random_state=42, replace=True)
+            df = df.sample(n=cur_num_quotes, random_state=random_state, replace=True)
             quote_dfs[party] = pd.concat([quote_dfs[party], df])
 
     for party in parties:
@@ -45,7 +47,7 @@ def get_quotes_sample_df_for_party(party, num_quotes=100000):
     return df
 
 
-def get_all_quotes_for_party(party, start_year=2015, end_year=2021, return_quote_ids=False):
+def get_all_quotes_for_party(party, start_year=2015, end_year=2021, return_quote_ids=False, max_all_quotes=1_000_000):
     dfs = []
     for quote_year in range(start_year, end_year):
         df = pd.read_csv(f'{base_data_dir}ADA_data/quotebank_one_party-{quote_year}.csv')
@@ -54,6 +56,12 @@ def get_all_quotes_for_party(party, start_year=2015, end_year=2021, return_quote
         dfs.append(df)
 
     res = pd.concat(dfs)
+
+    if len(res) > max_all_quotes:
+        res = res.sample(n=max_all_quotes, random_state=random_state)
+
+    assert len(res) <= max_all_quotes
+
     if return_quote_ids:
         return res['quotation'].tolist(), res['quoteID'].tolist()
     else:
@@ -142,7 +150,7 @@ def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=Tru
 
 
 def main():
-    per_party_analysis(load_model=True, load_reduced_model=True, load_topics=True)
+    per_party_analysis(load_model=True, load_reduced_model=False, load_topics=False)
 
 
 if __name__ == '__main__':
