@@ -150,7 +150,7 @@ def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=Tru
 
 
 def main():
-    per_party_analysis(load_model=True, load_reduced_model=False, load_topics=False)
+    per_party_analysis(load_model=False, load_reduced_model=False, load_topics=False)
 
 
 if __name__ == '__main__':
