@@ -79,9 +79,9 @@ def convert_quoteids_to_timestamps(quoteIDs, bucket_monthly=True):
         return quoteIDs
 
 
-def create_normalised_stacked_topics_chart(topics_over_time_df):
+def create_normalised_stacked_topics_chart(topics_over_time_df, top_n_topics=10):
     # Select top 10 topics
-    topics_over_time_df = topics_over_time_df[topics_over_time_df['Topic'] < 10]
+    topics_over_time_df = topics_over_time_df[topics_over_time_df['Topic'] < top_n_topics]
     frequency_sums = topics_over_time_df.groupby('Timestamp').sum()['Frequency'].to_frame().rename(
         columns={'Frequency': 'Frequency_Sum'})
     topics_over_time_df = topics_over_time_df.join(frequency_sums, on='Timestamp')
