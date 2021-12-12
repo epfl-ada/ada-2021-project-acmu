@@ -4,6 +4,7 @@ from collections import defaultdict
 from datetime import datetime
 
 import pandas as pd
+import plotly.express as px
 from bertopic import BERTopic
 
 base_data_dir = './'
@@ -47,7 +48,7 @@ def get_quotes_sample_df_for_party(party, num_quotes=100000):
     return df
 
 
-def get_all_quotes_for_party(party, start_year=2015, end_year=2021, return_quote_ids=False, max_all_quotes=1_000_000):
+def get_all_quotes_for_party(party, start_year=2015, end_year=2021, return_quote_ids=False, max_all_quotes=200_000):
     dfs = []
     for quote_year in range(start_year, end_year):
         df = pd.read_csv(f'{base_data_dir}ADA_data/quotebank_one_party-{quote_year}.csv')
@@ -70,8 +71,7 @@ def get_all_quotes_for_party(party, start_year=2015, end_year=2021, return_quote
 
 def convert_quoteids_to_timestamps(quoteIDs, bucket_monthly=True):
     def convert_to_month(quoteID):
-        datetime.strptime('-'.join(quoteID.split('-')[:2]), '%Y-%m')
-        return quoteID
+        return datetime.strptime('-'.join(quoteID.split('-')[:2]), '%Y-%m')
 
     if bucket_monthly:
         return list(map(convert_to_month, quoteIDs))
@@ -79,7 +79,20 @@ def convert_quoteids_to_timestamps(quoteIDs, bucket_monthly=True):
         return quoteIDs
 
 
-def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=True, auto_reduction=True):
+def create_normalised_stacked_topics_chart(topics_over_time_df):
+    # Select top 10 topics
+    topics_over_time_df = topics_over_time_df[topics_over_time_df['Topic'] < 10]
+    frequency_sums = topics_over_time_df.groupby('Timestamp').sum()['Frequency'].to_frame().rename(
+        columns={'Frequency': 'Frequency_Sum'})
+    topics_over_time_df = topics_over_time_df.join(frequency_sums, on='Timestamp')
+    topics_over_time_df['Frequency_Normalized'] = topics_over_time_df['Frequency'] / topics_over_time_df[
+        'Frequency_Sum']
+    fig = px.area(topics_over_time_df, x='Timestamp', y='Frequency_Normalized', color='Topic_Names')
+    return fig
+
+
+def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=True, auto_reduction=True,
+                       load_topics_over_time=True):
     cur_party = 'Republican Party'
     model_base_path = f'{base_data_dir}ADA_models/{snake_case(cur_party)}'
     sample_quotes_df = get_quotes_sample_df_for_party(cur_party)
@@ -105,7 +118,9 @@ def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=Tru
 
     # Remove quotes which are not clustered into a topic
     quotes_all = [x for i, x in enumerate(quotes_all) if model_topics_all[i] != -1]
-    model_probs_all = [x for i, x in enumerate(model_probs_all) if model_topics_all[i] != -1]
+    quotes_quoteIDs = [x for i, x in enumerate(quotes_quoteIDs) if model_topics_all[i] != -1]
+    model_probs_all = [x for i, x in enumerate(model_probs_all) if
+                       model_topics_all[i] != -1] if model_probs_all is not None else model_probs_all
     model_topics_all = [x for x in model_topics_all if x != -1]
 
     # Automatic reduction
@@ -123,10 +138,18 @@ def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=Tru
                 pickle.dump([auto_reduced_topics, auto_reduced_probs], topic_file)
 
         # Topics over time
-        topics_over_time_df = model.topics_over_time(
-            quotes_all, auto_reduced_topics, convert_quoteids_to_timestamps(quotes_quoteIDs)
-        )
-        topics_over_time_df.to_pickle(f'{model_base_path}_all_quotes_topics_over_time')
+        if load_topics_over_time:
+            topics_over_time_df = pd.read_pickle(f'{model_base_path}_all_quotes_topics_over_time')
+        else:
+            topics_over_time_df = model.topics_over_time(
+                quotes_all, auto_reduced_topics, convert_quoteids_to_timestamps(quotes_quoteIDs)
+            )
+            topics_over_time_df.to_pickle(f'{model_base_path}_all_quotes_topics_over_time')
+
+        topics_over_time_df['Topic_Names'] = topics_over_time_df['Topic'].apply(
+            lambda topic: " ".join([x[0] for x in model.get_topic(topic)]))
+        fig = create_normalised_stacked_topics_chart(topics_over_time_df)
+        fig.show()
     else:
         # Manual reduction
         manual_topic_list = [
@@ -150,7 +173,13 @@ def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=Tru
 
 
 def main():
-    per_party_analysis(load_model=False, load_reduced_model=False, load_topics=False)
+    per_party_analysis(load_model=True, load_topics=True, load_reduced_model=True, load_topics_over_time=True)
+
+
+def pandas_options():
+    pd.set_option("display.max_rows", 20)
+    pd.set_option("display.max_columns", 30)
+    pd.set_option("display.width", 300)
 
 
 if __name__ == '__main__':
