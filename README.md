@@ -179,19 +179,19 @@ A list of internal milestones up until project Milestone 3.
 <tbody>
   <tr>
     <td class="tg-0lax">@arinaraileanu</td>
-    <td class="tg-0lax">Come up with meaningful visualizations<br><br>Continue exploring the dataset<br><br>Develop the final text for the data story</td>
+    <td class="tg-0lax">Election prediction<br><br>Web development<br><br>Come up with meaningful visualizations<br><br>Continue exploring the dataset<br><br>Develop the final text for the data story</td>
   </tr>
   <tr>
     <td class="tg-0lax">@nitu-catalin1998</td>
-    <td class="tg-0lax">Develop the web interface<br><br>Analyze news website bias<br><br>Develop the final text for the data story</td>
+    <td class="tg-0lax">Graph analysis over topics and parties.<br><br>Common words analysis<br><br>Develop the web interface<br><br>Analyze news website bias<br><br>Develop the final text for the data story</td>
   </tr>
   <tr>
     <td class="tg-0lax">@MihaiDavid05</td>
-    <td class="tg-0lax">Define topic of interests<br><br>Tune clustering<br><br>Develop the final text for the data story</td>
+    <td class="tg-0lax">Graph analysis over topics and parties.<br><br>Topics analysis over time<br><br>Define topic of interests<br><br>Tune clustering<br><br>Develop the final text for the data story</td>
   </tr>
   <tr>
     <td class="tg-0lax">@umerhasan17</td>
-    <td class="tg-0lax">Develop the web interface<br><br>Integrate datasets of all years<br><br>Develop the final text for the data story</td>
+    <td class="tg-0lax">Topics analysis over year<br><br>Develop the web interface<br><br>Integrate datasets of all years<br><br>Develop the final text for the data story</td>
   </tr>
 </tbody>
 </table>
