@@ -1,6 +1,6 @@
 import pickle
 import re
-from collections import defaultdict
+from collections import defaultdict, Counter
 from datetime import datetime
 
 import pandas as pd
@@ -42,13 +42,22 @@ def create_quote_samples_for_party(parties, num_quotes=100000, start_year=2015, 
         df.to_pickle(f'{base_data_dir}ADA_data/{snake_case(party)}_{num_quotes}_sample_quotes.pkl')
 
 
-def get_quotes_sample_df_for_party(party, num_quotes=100000):
-    df = pd.read_pickle(f'{base_data_dir}ADA_data/{snake_case(party)}_{num_quotes}_sample_quotes.pkl')
-    assert len(df) == num_quotes
+def get_quotes_sample_df_for_party(party, load=True, num_quotes=100000):
+    if load:
+        df = pd.read_pickle(f'{base_data_dir}ADA_data/{snake_case(party)}_{num_quotes}_sample_quotes.pkl')
+    else:
+        dfs = []
+        for quote_year in range(2015, 2021):
+            df = pd.read_csv(f'/content/drive/MyDrive/Quotebank_sets_final/quotebank_one_party-{quote_year}.csv')
+            df = df[df['party_one'] == party]
+            df = df[['quotation']]
+            dfs.append(df)
+
+        assert len(df) == num_quotes
     return df
 
 
-def get_all_quotes_for_party(party, start_year=2015, end_year=2021, return_quote_ids=False, max_all_quotes=200_000):
+def get_all_quotes_for_party(party, start_year=2015, end_year=2021, return_quote_ids=False, max_all_quotes=1_600_000):
     dfs = []
     for quote_year in range(start_year, end_year):
         df = pd.read_csv(f'{base_data_dir}ADA_data/quotebank_one_party-{quote_year}.csv')
@@ -79,7 +88,7 @@ def convert_quoteids_to_timestamps(quoteIDs, bucket_monthly=True):
         return quoteIDs
 
 
-def create_normalised_stacked_topics_chart(topics_over_time_df, top_n_topics=10):
+def create_normalised_stacked_topics_chart(topics_over_time_df, cur_party, top_n_topics=10):
     # Select top 10 topics
     topics_over_time_df = topics_over_time_df[topics_over_time_df['Topic'] < top_n_topics]
     frequency_sums = topics_over_time_df.groupby('Timestamp').sum()['Frequency'].to_frame().rename(
@@ -87,11 +96,25 @@ def create_normalised_stacked_topics_chart(topics_over_time_df, top_n_topics=10)
     topics_over_time_df = topics_over_time_df.join(frequency_sums, on='Timestamp')
     topics_over_time_df['Frequency_Normalized'] = topics_over_time_df['Frequency'] / topics_over_time_df[
         'Frequency_Sum']
-    fig = px.area(topics_over_time_df, x='Timestamp', y='Frequency_Normalized', color='Topic_Names')
+    labels = {
+        'Conservative Party': {0: 'britain', 1: 'brexit', 2: 'woman', 3: 'media', 4: 'investigation', 5: 'housing', 6: 'prime minister', 7: 'unemployment', 8: 'banks', 9: 'border'},
+        'Republican Party': {0: 'education', 1: 'leadership', 2: 'hillary', 3: 'tax', 4: 'paul ryan', 5: 'china', 6: 'marriage', 7: 'iran', 8: 'president', 9: 'gambling'},
+        'Democratic Party': {0: 'guns', 1: 'joe biden', 2: 'parade', 3: 'hearing', 4: 'hillary', 5: 'city', 6: 'bipartisan', 7: 'energy infrastructure', 8: 'democratic party members', 9: 'voting'},
+        'Labour Party': {0: 'labour', 1: 'transportation', 2: 'justice', 3: 'housing', 4: 'britain', 5: 'diversity', 6: 'children', 7: 'contracts', 8: 'cycling / cars', 9: 'scotland'},
+    }
+    words = {}
+    for topic_number in range(topics_over_time_df['Topic'].min(), topics_over_time_df['Topic'].max() + 1):
+        word_counter = Counter(", ".join(topics_over_time_df[topics_over_time_df['Topic'] == topic_number]['Words'].tolist()).split(', '))
+        most_common_word = " ".join([x[0] for x in word_counter.most_common()[:5]])
+        print(most_common_word)
+        words[topic_number] = most_common_word
+    topics_over_time_df['Topic_Label'] = topics_over_time_df.apply(lambda row: labels[cur_party][row.Topic], axis=1)
+    topics_over_time_df['Topic_Words'] = topics_over_time_df.apply(lambda row: words[row.Topic], axis=1)
+    fig = px.area(topics_over_time_df, x='Timestamp', y='Frequency_Normalized', color='Topic_Label', hover_data=['Topic_Words'])
     return fig
 
 
-def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=True, auto_reduction=True,
+def per_party_analysis(load_sample_quotes=True, load_model=True, load_topics=True, load_reduced_model=True, auto_reduction=True,
                        load_topics_over_time=True):
     cur_party = 'Republican Party'
     model_base_path = f'{base_data_dir}ADA_models/{snake_case(cur_party)}'
@@ -173,7 +196,7 @@ def per_party_analysis(load_model=True, load_topics=True, load_reduced_model=Tru
 
 
 def main():
-    per_party_analysis(load_model=True, load_topics=True, load_reduced_model=True, load_topics_over_time=True)
+    per_party_analysis(load_sample_quotes=False, load_model=True, load_topics=True, load_reduced_model=False, load_topics_over_time=False)
 
 
 def pandas_options():
@@ -183,4 +206,9 @@ def pandas_options():
 
 
 if __name__ == '__main__':
-    main()
+    for p in ['Conservative Party', 'Republican Party', 'Democratic Party', 'Labour Party']:
+        sp = snake_case(p)
+        df = pd.read_pickle(f'ADA_models/{sp}_all_quotes_topics_over_time2')
+        fig = create_normalised_stacked_topics_chart(df, cur_party=p, top_n_topics=10)
+        fig.write_html(f'{sp}_final.html')
+        fig.show()
