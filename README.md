@@ -119,7 +119,7 @@ As a crude example, we can investigate the occurrences of the topic word in the 
 </table>
 </p>
 
-Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. We keep track of the political party of the members within each topic cluster and output the number of quotes each party is associated with for a given cluster. For the future milestone, we will refine our analyses based on the pre-defined topics of interest.
+Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. We keep track of the political party of the members within each topic cluster and output the number of quotes each party is associated with for a given cluster.
 
 > ### Do the main subjects change with time?
 Not only do politicians switch parties from time to time, but even opinions within the same party can fluctuate. Our first approach at monitoring quote trends involves counting the quotes containing a certain keyword by date and relating them to Google trends, to figure out whether they follow a similar pattern. The plot below suggests a link between the occurrence of "shooting" in Donald Trump's quotes and the search trend of the word. Furthermore, both can be related to mass shootings that happened in the US, such as the Stoneman Douglas High School shooting, which corresponds to the highest spike in both trends.
@@ -128,7 +128,7 @@ Not only do politicians switch parties from time to time, but even opinions with
  <img src="./figures/trump_quotes.png" alt="trump quotes" width=500"/>
 </p>
                                                                     
-While examining approaches for answering our third research question, we discovered an important aspect of the dataset. Quotes may be referenced in news websites at a different time than originally spoken. Furthermore, news quotes may not be a direct representation of what politicians actually talk about. By definition, quotes are cherry-picked by authors that might be biased. For example, some websites are owned by politicians and controversial subjects are over-emphasised in the media. It remains to further analyze the effect of these aspects for our next milestone.
+While examining approaches for answering our third research question, we discovered an important aspect of the dataset. Quotes may be referenced in news websites at a different time than originally spoken. Furthermore, news quotes may not be a direct representation of what politicians actually talk about. By definition, quotes are cherry-picked by authors that might be biased. For example, some websites are owned by politicians and controversial subjects are over-emphasised in the media.
 
 <!---
 > Can website biases influence our findings on the actual subjects politicians talk about?
