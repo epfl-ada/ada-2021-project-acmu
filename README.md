@@ -1,5 +1,9 @@
 # What Do Parties Talk About? Political Parties' Interests Seen Through Quotes
 
+## Data Story :book:
+
+🌍 [arinaraileanu.github.io/What-Do-Parties-Talk-About](https://arinaraileanu.github.io/What-Do-Parties-Talk-About/)
+
 ## Abstract :memo:
 <!---
 A 150 word description of the project idea and goals. What’s the motivation behind your project? What story would you like to tell, and why?)
@@ -122,7 +126,7 @@ As a crude example, we can investigate the occurrences of the topic word in the 
 Using the initial results of the first question, we conduct additional analysis on the quotes contained within topic clusters. We keep track of the political party of the members within each topic cluster and output the number of quotes each party is associated with for a given cluster.
 
 > ### Do the main subjects change with time?
-Not only do politicians switch parties from time to time, but even opinions within the same party can fluctuate. Our first approach at monitoring quote trends involves counting the quotes containing a certain keyword by date and relating them to Google trends, to figure out whether they follow a similar pattern. The plot below suggests a link between the occurrence of "shooting" in Donald Trump's quotes and the search trend of the word. Furthermore, both can be related to mass shootings that happened in the US, such as the Stoneman Douglas High School shooting, which corresponds to the highest spike in both trends.
+Not only do politicians switch parties from time to time, but even opinions within the same party can fluctuate. Our first approach at monitoring quote trends involves counting the quotes containing a certain keyword by date and relating them to Google trends, to figure out whether they follow a similar pattern. The plot below suggests a link between the occurrence of "shooting" in Donald Trump's quotes and the search trend of the word. Furthermore, both can be related to mass shootings that happened in the US, such as the El Paso shooting, which corresponds to the highest spike in both trends.
 
 <p align="center">
  <img src="./figures/trump_quotes.png" alt="trump quotes" width=500"/>
